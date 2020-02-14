@@ -2,6 +2,7 @@ import torch.utils.data as dataloader
 from dataloader import H5Dataset
 import torch.optim as optim
 from common import *
+from tqdm import tqdm
 
 # --------------------------CUDA check-----------------
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
