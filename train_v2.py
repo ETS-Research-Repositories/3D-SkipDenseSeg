@@ -24,7 +24,7 @@ if __name__ == '__main__':
         scheduler_S.step(epoch)
         # zero the parameter gradients
         model_S.train()
-        for i, data in enumerate(trainloader):
+        for i, data in tqdm(enumerate(trainloader)):
             images, targets = data
             # Set mode cuda if it is enable, otherwise mode CPU
             images = images.to(device)
