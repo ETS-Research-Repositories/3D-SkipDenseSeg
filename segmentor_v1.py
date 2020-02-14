@@ -126,11 +126,11 @@ class DenseNet(nn.Module):
         # Official init from torch repo.
         for m in self.modules():
             if isinstance(m, nn.Conv3d):
-                nn.init.kaiming_normal(m.weight)
+                nn.init.kaiming_normal_(m.weight)
                 #nn.Conv3d.bias.data.fill_(-0.1)
             elif isinstance(m, nn.BatchNorm3d):
-                nn.init.constant(m.weight, 1)
-                nn.init.constant(m.bias, 0)
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
 
     def forward(self, x):
         first_three_features = self.features(x)
