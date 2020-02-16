@@ -1,11 +1,12 @@
-import h5py
-import torch
-import torch.utils.data as data
 import glob
-import os
+
+import h5py
+import torch.utils.data as data
+
 from common import *
-import numpy as np
-#import nibabel as nib
+
+
+# import nibabel as nib
 # BCHW order
 
 
@@ -37,12 +38,12 @@ class H5Dataset(data.Dataset):
             cz = (W - self.crop_size[2]) // 2
 
         self.data_crop = self.data[:, :, cx:cx + self.crop_size[0],
-                                   cy:cy + self.crop_size[1],
-                                   cz:cz + self.crop_size[2]]
+                         cy:cy + self.crop_size[1],
+                         cz:cz + self.crop_size[2]]
         self.label_crop = self.label[:, cx:cx + self.crop_size[0],
-                                     cy:cy + self.crop_size[1],
-                                     cz:cz + self.crop_size[2]]
-        #print(self.data_crop.shape, self.label_crop.shape)
+                          cy:cy + self.crop_size[1],
+                          cz:cz + self.crop_size[2]]
+        # print(self.data_crop.shape, self.label_crop.shape)
         # ------End random crop-------------
         # h5_file.close()
         return (torch.from_numpy(self.data_crop[0, :, :, :, :]).float(),

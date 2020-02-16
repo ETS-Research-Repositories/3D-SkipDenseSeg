@@ -1,9 +1,10 @@
-from metrics import dice
-import torch
 import time
-from common import *
+
 import SimpleITK as sitk
-import glob
+
+from common import *
+
+torch.backends.cudnn.benchmark = True
 #############################
 # Read Nii/hdr file using stk
 #############################
@@ -32,7 +33,7 @@ net = DenseNet(num_init_features=32,
                growth_rate=16,
                block_config=(4, 4, 4, 4),
                num_classes=4).to(device)
-
+checkpoint="checkpoints/07000_model_3d_denseseg_v1.pth"
 if __name__ == '__main__':
     # -----------------------Testing-------------------------------------
     # -----------------------Load the checkpoint (weights)---------------
@@ -78,7 +79,7 @@ if __name__ == '__main__':
     deep_slices = np.arange(0, C - crop_size[0] + xstep, xstep)
     height_slices = np.arange(0, H - crop_size[1] + ystep, ystep)
     width_slices = np.arange(0, W - crop_size[2] + zstep, zstep)
-    whole_pred = np.zeros((1, ) + (num_classes, ) + image.shape[2:])
+    whole_pred = np.zeros((1,) + (num_classes,) + image.shape[2:])
     count_used = np.zeros(
         (image.shape[2], image.shape[3], image.shape[4])) + 1e-5
 
@@ -91,18 +92,18 @@ if __name__ == '__main__':
                     height = height_slices[j]
                     width = width_slices[k]
                     image_crop = image[:, :, deep:deep + crop_size[0],
-                                       height:height + crop_size[1],
-                                       width:width + crop_size[2]]
+                                 height:height + crop_size[1],
+                                 width:width + crop_size[2]]
 
                     outputs = net(image_crop)
                     whole_pred[slice(None),
-                               slice(None), deep:deep + crop_size[0],
-                               height:height + crop_size[1], width:width +
-                               crop_size[2]] += outputs.data.cpu().numpy()
+                    slice(None), deep:deep + crop_size[0],
+                    height:height + crop_size[1], width:width +
+                                                        crop_size[2]] += outputs.data.cpu().numpy()
 
                     count_used[deep:deep + crop_size[0],
-                               height:height + crop_size[1],
-                               width:width + crop_size[2]] += 1
+                    height:height + crop_size[1],
+                    width:width + crop_size[2]] += 1
                     # ----------------Major voting-----------------------------
                     # _, temp_predict = torch.max(outputs.data, 1)
                     # for labelInd in range(num_classes):  # note, start from 0
@@ -129,7 +130,7 @@ if __name__ == '__main__':
         dsc_i = dice(whole_pred, label, i)
         dsc_i = round(dsc_i * 100, 2)
         dsc.append(dsc_i)
-    #print ('-------------------------')
+    # print ('-------------------------')
     datetime = time.strftime("%d/%m/%Y")
     print('Data       | Note   | class1| class2|class3| Avg.|')
     print('%s | %s | %2.2f | %2.2f | %2.2f | %2.2f |' %

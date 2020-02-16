@@ -1,3 +1,4 @@
+import cv2
 import torch
 import random
 import torch.backends.cudnn as cudnn
@@ -24,13 +25,13 @@ os.environ['CUDA_VISIBLE_DEVICES'] = '0'  # '1'
 # Network setting
 pre_trained = True
 # Optimization
-num_epoch = 20000
+num_epoch = 2000
 lr_S = 2e-4
 lr_D = 2e-5
 momentum_S = 0.9
 momentum_D = 0.9
-step_size_S = 5000
-step_size_D = 5000
+step_size_S = 500
+step_size_D = 500
 beta1 = 0.9
 beta2 = 0.999
 batch_train = 4

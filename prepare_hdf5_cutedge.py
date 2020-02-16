@@ -1,12 +1,15 @@
-from medpy.io import load
-import numpy as np
 import os
+
 import h5py
+import numpy as np
+from medpy.io import load
 
 # Path to your dataset (img, hdr files)
 data_path = './data_train/'
 # Saved path
 target_path = './data_train_nocut'
+
+
 # Reference https://github.com/zhengyang-wang/Unet_3D/tree/master/preprocessing
 
 
@@ -99,14 +102,14 @@ def build_h5_dataset(data_path, target_path):
         min_D_s, max_D_e, min_H_s, max_H_e, min_W_s, max_W_e = cut_edge(
             mask, margin)
         inputs_tmp_T1 = inputs_T1_norm[min_D_s:max_D_e + 1,
-                                       min_H_s:max_H_e + 1,
-                                       min_W_s:max_W_e + 1]
+                        min_H_s:max_H_e + 1,
+                        min_W_s:max_W_e + 1]
         inputs_tmp_T2 = inputs_T2_norm[min_D_s:max_D_e + 1,
-                                       min_H_s:max_H_e + 1,
-                                       min_W_s:max_W_e + 1]
+                        min_H_s:max_H_e + 1,
+                        min_W_s:max_W_e + 1]
 
         labels_tmp = labels[min_D_s:max_D_e + 1, min_H_s:max_H_e + 1,
-                            min_W_s:max_W_e + 1]
+                     min_W_s:max_W_e + 1]
 
         inputs_tmp_T1 = inputs_tmp_T1
         inputs_tmp_T2 = inputs_tmp_T2
