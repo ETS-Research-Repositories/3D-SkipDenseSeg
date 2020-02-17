@@ -26,6 +26,7 @@ scheduler_S = optim.lr_scheduler.StepLR(optimizer_S,
                                         gamma=0.1)
 
 batch_num = 128
+best_dice = 0
 
 
 def val(model_S, valloader,):
@@ -102,8 +103,11 @@ if __name__ == '__main__':
                 loss_seg.data.cpu().numpy(),
                 # dsc for center path
                 dsc))
-
+        if dsc> best_dice:
+            best_dice=dsc
+            torch.save(model_S.state_dict(),
+                       './checkpoints/' + '%s_%s_best.pth' % (str(epoch).zfill(5), checkpoint_name))
         # Save checkpoint
-        if (epoch % step_size_S) == 0 or epoch == (num_epoch - 1) or (epoch % 1000) == 0:
+        if (epoch % step_size_S) == 0 or epoch == (num_epoch - 1) or (epoch % 100) == 0:
             torch.save(model_S.state_dict(),
                        './checkpoints/' + '%s_%s.pth' % (str(epoch).zfill(5), checkpoint_name))

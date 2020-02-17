@@ -15,7 +15,7 @@ from segmentor_v1 import DenseNet
 from metrics import dice
 
 # Select the Nvidia card
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'  # '1'
+os.environ['CUDA_VISIBLE_DEVICES'] = '1'  # '1'
 #from torch.autograd import Variable
 # ----------------------------------Common Settings----------------------------
 # Fix seed to reproduce result
@@ -30,7 +30,7 @@ lr_S = 2e-4
 lr_D = 2e-5
 momentum_S = 0.9
 momentum_D = 0.9
-step_size_S = 500
+step_size_S = 100
 step_size_D = 500
 beta1 = 0.9
 beta2 = 0.999
